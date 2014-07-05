@@ -18,7 +18,6 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-
 // --------------------------------------------------------------------------
 // THIS IS THE TRACKUINO FIRMWARE CONFIGURATION FILE. YOUR CALLSIGN AND
 // OTHER SETTINGS GO HERE.
@@ -67,7 +66,7 @@
 #define TX_DELAY      300
 
 // --------------------------------------------------------------------------
-// Tracker config (trackuino.pde)
+// Tracker config (AIO_tracker_arduino_code.ino)
 // --------------------------------------------------------------------------
 
 // APRS packets are slotted so that multiple trackers can be used without
@@ -89,7 +88,7 @@
 // debug data will be printed out the serial port.
 #define GPS_BAUDRATE  9600
 
-
+#define GPSEN_PIN 5   //This is the digital pin where the uBlox gps receiver's enable is connected. force LOW to activate GPS
 // --------------------------------------------------------------------------
 // Modem config (afsk.cpp)
 // --------------------------------------------------------------------------
@@ -151,12 +150,39 @@
 // 3. When flashing the firmware, disconnect the GPS from the RX pin or you
 //    will get errors.
 
-#define DEBUG_GPS    // GPS sentence dump and checksum validation
-#define DEBUG_AX25   // AX.25 frame dump
+
+//if any of the debugs is enabled, set soft serial parameters
+
+ #define DEBUG_GPS    // GPS sentence dump and checksum validation
+#ifdef DEBUG_GPS  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
+ #define DEBUG_AX25   // AX.25 frame dump
+#ifdef DEBUG_AX25  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
 // #define DEBUG_MODEM  // Modem ISR overrun and profiling
+#ifdef DEBUG_MODEM  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
 // #define DEBUG_AFSK   // AFSK (modulation) output
-#define DEBUG_RESET  // AVR reset
+#ifdef DEBUG_AFSK  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
+// #define DEBUG_RESET  // AVR reset
+#ifdef DEBUG_RESET  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
 // #define DEBUG_SENS   // Sensors
+#ifdef DEBUG_SENS  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
 
 
 #endif

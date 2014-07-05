@@ -48,6 +48,7 @@
 #else
 #  include <WProgram.h>
 #endif
+#include <SoftwareSerial.h>
 
 // Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
@@ -56,22 +57,38 @@ static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
 static int32_t next_aprs = 0;
 
 
+//configure softserial port for debuging purposes
+#ifdef SOFTSERIALDEBUG
+SoftwareSerial softdebug(0, A3);
+#endif
+
+
 void setup()
 {
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
+//enable the digital pin where the uBlox gps receiver's enable is connected. 
+//force LOW to activate GPS
+  pinMode(GPSEN_PIN, OUTPUT);
+  pin_write(GPSEN_PIN, LOW);
+
   Serial.begin(GPS_BAUDRATE);
+
+#ifdef SOFTSERIALDEBUG  
+  softdebug.begin(GPS_BAUDRATE);
+#endif
+
 #ifdef DEBUG_RESET
-  Serial.println("RESET");
+  softdebug.println("RESET");
 #endif
 
   afsk_setup();
   gps_setup();
 
 #ifdef DEBUG_SENS
-  Serial.print(", Vin=");
-  Serial.println(sensors_vin());
+  softdebug.print(", Vin=");
+  softdebug.println(sensors_vin());
 #endif
 
   // Do not start until we get a valid time reference
