@@ -70,13 +70,14 @@ void setup()
 
 //enable the digital pin where the uBlox gps receiver's enable is connected. 
 //force LOW to activate GPS
+//----------- consider incluing in future ublox_setup() function
   pinMode(GPSEN_PIN, OUTPUT);
   pin_write(GPSEN_PIN, LOW);
 
   Serial.begin(GPS_BAUDRATE);
 
 #ifdef SOFTSERIALDEBUG  
-  softdebug.begin(GPS_BAUDRATE);
+  softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
 #endif
 
 #ifdef DEBUG_RESET
@@ -95,9 +96,9 @@ void setup()
   // for slotted transmissions.
   if (APRS_SLOT >= 0) {
     do {
-      while (! Serial.available())
-        power_save();
-    } while (! gps_decode(Serial.read()));
+      while (! Serial.available())  ///enquanto nao houver bytes na porta serial - > sem sinal GPS
+        power_save();  //entrar em power save ate ao sinal seguinte...
+    } while (! gps_decode(Serial.read()));//ir acordando e adormecendo enquanto nao se conseguir descodificar uma frase completa
     
     next_aprs = millis() + 1000 *
       (APRS_PERIOD - (gps_seconds + APRS_PERIOD - APRS_SLOT) % APRS_PERIOD);
@@ -124,7 +125,10 @@ void loop()
 {
   // Time for another APRS frame
   if ((int32_t) (millis() - next_aprs) >= 0) {
-    get_pos();
+    //get_pos();
+    //insert GPS function to get data here
+    //consider using trackduino original
+    //___________
     aprs_send();
     next_aprs += APRS_PERIOD * 1000L;
     while (afsk_flush()) {

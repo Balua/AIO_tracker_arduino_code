@@ -120,6 +120,7 @@ float gps_course = 0;
 float gps_speed = 0;
 float gps_altitude = 0;
 
+
 // Module functions
 unsigned char from_hex(char a) 
 {
@@ -236,6 +237,7 @@ void gps_setup() {
   strcpy(gps_time, "000000");
   strcpy(gps_aprs_lat, "0000.00N");
   strcpy(gps_aprs_lon, "00000.00E");
+  
 }
 
 bool gps_decode(char c)
