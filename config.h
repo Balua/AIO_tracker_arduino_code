@@ -38,7 +38,7 @@
 // - Cars:       9
 // - Home:       0
 // - IGate:      5
-#define S_CALLSIGN      "CR7AKD"  //callsign duarte - mudar para o callsign da ana
+#define S_CALLSIGN      "CR6BAL"  //callsign duarte - mudar para o callsign da ana
 #define S_CALLSIGN_ID   11
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
@@ -158,7 +158,7 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
- #define DEBUG_AX25   // AX.25 frame dump
+// #define DEBUG_AX25   // AX.25 frame dump
 #ifdef DEBUG_AX25  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
@@ -183,8 +183,8 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
-#ifdef SOFTSERIALDEBUG  // if debug enabled on soft serial:
-  #define SOFTSERIALDEBUG_BAUDRATE 19800 //set softserial debug baud rate
+#ifdef SOFTSERIALDEBUG  // if any debug enabled on soft serial:
+  #define SOFTSERIALDEBUG_BAUDRATE 19800 //set softserial debug baud rate (max possible with softserial is 19800 baud)
 #endif
 
 

@@ -27,12 +27,16 @@
 #else
 #  include <WProgram.h>
 #endif
+#include <SoftwareSerial.h>
 
+#ifdef SOFTSERIALDEBUG
+extern SoftwareSerial softdebug;
+#endif
 
 // Exported functions
 void aprs_send()
 {
-  char temp[12];                   // Temperature (int/ext)
+  char temp[12];                   // temporary string to be used to store infomation before ax25_send function
   const struct s_address addresses[] = { 
     {D_CALLSIGN, D_CALLSIGN_ID},  // Destination callsign
     {S_CALLSIGN, S_CALLSIGN_ID},  // Source callsign (-11 = balloon, -9 = car)
@@ -58,8 +62,11 @@ void aprs_send()
   ax25_send_byte('/');                // and
   snprintf(temp, 4, "%03d", (int)(gps_speed + 0.5));
   ax25_send_string(temp);             // speed (knots)
-  ax25_send_string("/A=");            // Altitude (feet). Goes anywhere in the comment area
+  ax25_send_string("/A=");            // Altitude (meters). Goes anywhere in the comment area
   snprintf(temp, 7, "%06ld", (long)(gps_altitude + 0.5));
+  ax25_send_string(temp);
+  ax25_send_string("/LVP=");            // the number of milliseconds since the last valid gps position
+  snprintf(temp, 7, "%05u", gps_fix_age);
   ax25_send_string(temp);
   ax25_send_string("/V=");
   snprintf(temp, 6, "%d", sensors_vin());

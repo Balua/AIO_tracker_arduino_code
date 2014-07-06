@@ -24,7 +24,11 @@
 #else
 #  include <WProgram.h>
 #endif
+#include <SoftwareSerial.h>
 
+#ifdef SOFTSERIALDEBUG
+extern SoftwareSerial softdebug;
+#endif
 // Module constants
 static const unsigned int MAX_PACKET = 512;  // bytes
 
@@ -77,7 +81,7 @@ ax25_send_byte(uint8_t a_byte)
   // Wrap around send_byte, but prints debug info
   send_byte(a_byte);
 #ifdef DEBUG_AX25
-  Serial.print((char)a_byte);
+  softdebug.print((char)a_byte);
 #endif
 }
 
@@ -140,31 +144,31 @@ ax25_send_header(const struct s_address *addresses, int num_addresses)
 
 #ifdef DEBUG_AX25
   // Print source callsign
-  Serial.println();
-  Serial.print('[');
-  Serial.print(millis());
-  Serial.print("] ");
-  Serial.print(addresses[1].callsign);
+  softdebug.println();
+  softdebug.print('[');
+  softdebug.print(millis());
+  softdebug.print("] ");
+  softdebug.print(addresses[1].callsign);
   if (addresses[1].ssid) {
-    Serial.print('-');
-    Serial.print((unsigned int)addresses[1].ssid);
+    softdebug.print('-');
+    softdebug.print((unsigned int)addresses[1].ssid);
   }
-  Serial.print('>');
+  softdebug.print('>');
   // Destination callsign
-  Serial.print(addresses[0].callsign);
+  softdebug.print(addresses[0].callsign);
   if (addresses[0].ssid) {
-    Serial.print('-');
-    Serial.print((unsigned int)addresses[0].ssid);
+    softdebug.print('-');
+    softdebug.print((unsigned int)addresses[0].ssid);
   }
   for (i = 2; i < num_addresses; i++) {
-    Serial.print(',');
-    Serial.print(addresses[i].callsign);
+    softdebug.print(',');
+    softdebug.print(addresses[i].callsign);
     if (addresses[i].ssid) {
-      Serial.print('-');
-      Serial.print((unsigned int)addresses[i].ssid);
+      softdebug.print('-');
+      softdebug.print((unsigned int)addresses[i].ssid);
     }
   }
-  Serial.print(':');
+  softdebug.print(':');
 #endif
 }
 
@@ -182,7 +186,7 @@ ax25_send_footer()
   // Signal the end of frame
   ax25_send_flag();
 #ifdef DEBUG_AX25
-  Serial.println();
+  softdebug.println();
 #endif
 }
 

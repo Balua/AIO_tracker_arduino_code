@@ -30,8 +30,9 @@ extern char gps_aprs_lon[10];
 extern float gps_course;
 extern float gps_speed;
 extern float gps_altitude;
+extern unsigned int gps_fix_age;
 
 void gps_setup();
-bool gps_decode(char c);
+void ublox_to_aprs();
 
 #endif

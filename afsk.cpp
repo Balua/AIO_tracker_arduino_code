@@ -38,7 +38,11 @@
 #  include <WProgram.h>
 #endif
 #include <stdint.h>
+#include <SoftwareSerial.h>
 
+#ifdef SOFTSERIALDEBUG
+extern SoftwareSerial softdebug;
+#endif
 // Module consts
 
 // The actual baudrate after rounding errors will be:
@@ -195,8 +199,8 @@ bool afsk_flush()
     uint8_t s = afsk_read_sample((phase >> 7) & (TABLE_SIZE - 1));
 
 #ifdef DEBUG_AFSK
-    Serial.print((uint16_t)s);
-    Serial.print('/');
+    softdebug.print((uint16_t)s);
+    softdebug.print('/');
 #endif
   
 #if PRE_EMPHASIS == 1
@@ -205,8 +209,8 @@ bool afsk_flush()
 #endif
 
 #ifdef DEBUG_AFSK
-    Serial.print((uint16_t)s);
-    Serial.print(' ');
+    softdebug.print((uint16_t)s);
+    softdebug.print(' ');
 #endif
 
     afsk_fifo_in_safe(s);
@@ -214,7 +218,7 @@ bool afsk_flush()
     current_sample_in_baud += (1 << 8);
     if (current_sample_in_baud >= SAMPLES_PER_BAUD) {
 #ifdef DEBUG_AFSK
-      Serial.println();
+      softdebug.println();
 #endif
       packet_pos++;
       current_sample_in_baud -= SAMPLES_PER_BAUD;
@@ -240,8 +244,8 @@ AFSK_ISR
 #ifdef DEBUG_MODEM
 void afsk_debug()
 {
-  Serial.print("fifo overruns=");
-  Serial.println(sample_overruns);
+  softdebug.print("fifo overruns=");
+  softdebug.println(sample_overruns);
 
   sample_overruns = 0;
 }

@@ -49,6 +49,7 @@
 #  include <WProgram.h>
 #endif
 #include <SoftwareSerial.h>
+#include <TinyGPS.h>
 
 // Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
@@ -56,6 +57,8 @@ static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
 // Module variables
 static int32_t next_aprs = 0;
 
+//initialize tinygps object named ublox  
+TinyGPS ublox;
 
 //configure softserial port for debuging purposes
 #ifdef SOFTSERIALDEBUG
@@ -68,13 +71,7 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
-//enable the digital pin where the uBlox gps receiver's enable is connected. 
-//force LOW to activate GPS
-//----------- consider incluing in future ublox_setup() function
-  pinMode(GPSEN_PIN, OUTPUT);
-  pin_write(GPSEN_PIN, LOW);
-
-  Serial.begin(GPS_BAUDRATE);
+  
 
 #ifdef SOFTSERIALDEBUG  
   softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
@@ -83,9 +80,8 @@ void setup()
 #ifdef DEBUG_RESET
   softdebug.println("RESET");
 #endif
-
-  afsk_setup();
   gps_setup();
+  afsk_setup();
 
 #ifdef DEBUG_SENS
   softdebug.print(", Vin=");
@@ -98,7 +94,7 @@ void setup()
     do {
       while (! Serial.available())  ///enquanto nao houver bytes na porta serial - > sem sinal GPS
         power_save();  //entrar em power save ate ao sinal seguinte...
-    } while (! gps_decode(Serial.read()));//ir acordando e adormecendo enquanto nao se conseguir descodificar uma frase completa
+    } while (! ublox.encode(Serial.read()));//ir acordando e adormecendo enquanto nao se conseguir descodificar uma frase completa
     
     next_aprs = millis() + 1000 *
       (APRS_PERIOD - (gps_seconds + APRS_PERIOD - APRS_SLOT) % APRS_PERIOD);
@@ -111,24 +107,30 @@ void setup()
 
 void get_pos()
 {
+  char c;
   // Get a valid position from the GPS
   int valid_pos = 0;
   uint32_t timeout = millis();
   do {
-    if (Serial.available())
-      valid_pos = gps_decode(Serial.read());
-  } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ;
-
+    if (Serial.available()){
+      c=Serial.read();
+      valid_pos = ublox.encode(c);
+#ifdef DEBUG_GPS
+      Serial.print(c);
+#endif
+    }
+  } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
+  // stop loop if valid position=TRUE or if defined timeout is reached (definition on AIO_Tracker_arduino_code.ino)
+  if (valid_pos){
+   ublox_to_aprs(); 
+  }
 }
 
 void loop()
 {
   // Time for another APRS frame
   if ((int32_t) (millis() - next_aprs) >= 0) {
-    //get_pos();
-    //insert GPS function to get data here
-    //consider using trackduino original
-    //___________
+    get_pos();
     aprs_send();
     next_aprs += APRS_PERIOD * 1000L;
     while (afsk_flush()) {
