@@ -62,7 +62,7 @@ TinyGPS ublox;
 
 //configure softserial port for debuging purposes
 #ifdef SOFTSERIALDEBUG
-SoftwareSerial softdebug(0, A3);
+SoftwareSerial softdebug(A2, A3);
 #endif
 
 
@@ -71,10 +71,12 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
-  
+  pinMode(4, OUTPUT);
+  pin_write(4, HIGH); // enable all 5V electronics by enabling 5volt regulator
 
 #ifdef SOFTSERIALDEBUG  
   softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
+  softdebug.println("Soft serial port open");
 #endif
 
 #ifdef DEBUG_RESET
@@ -107,6 +109,9 @@ void setup()
 
 void get_pos()
 {
+#ifdef DEBUG_GPS
+      softdebug.println("entering get_pos()");    
+#endif
   char c;
   // Get a valid position from the GPS
   int valid_pos = 0;
@@ -116,7 +121,7 @@ void get_pos()
       c=Serial.read();
       valid_pos = ublox.encode(c);
 #ifdef DEBUG_GPS
-      Serial.print(c);
+      softdebug.print(c);
 #endif
     }
   } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
@@ -124,10 +129,13 @@ void get_pos()
   if (valid_pos){
    ublox_to_aprs(); 
   }
+#ifdef DEBUG_GPS
+      softdebug.println("exiting get_pos()");    
+#endif
 }
 
 void loop()
-{
+{  
   // Time for another APRS frame
   if ((int32_t) (millis() - next_aprs) >= 0) {
     get_pos();

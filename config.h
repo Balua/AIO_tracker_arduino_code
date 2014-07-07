@@ -97,7 +97,7 @@
 // PWM, so the only two options are pins 3 and 11.
 // Pin 11 doubles as MOSI, so I suggest using pin 3 for PWM and leave 11 free
 // in case you ever want to interface with an SPI device.
-#define AUDIO_PIN       3    //na nossa board está no PD4/digital 4 mas este pino não é PWM - MUDAR!
+#define AUDIO_PIN       3    //na nossa board está no PD4/digital 4 mas este pino não é PWM - MUDAR os pinos ao soldar o hx1
 
 // Pre-emphasize the 2200 tone by 6 dB. This is actually done by 
 // de-emphasizing the 1200 tone by 6 dB and it might greatly improve
@@ -158,7 +158,7 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
-// #define DEBUG_AX25   // AX.25 frame dump
+ #define DEBUG_AX25   // AX.25 frame dump
 #ifdef DEBUG_AX25  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
@@ -184,7 +184,7 @@
 #endif
 
 #ifdef SOFTSERIALDEBUG  // if any debug enabled on soft serial:
-  #define SOFTSERIALDEBUG_BAUDRATE 19800 //set softserial debug baud rate (max possible with softserial is 19800 baud)
+  #define SOFTSERIALDEBUG_BAUDRATE 9600 //set softserial debug baud rate (max possible with softserial is 19800 baud)
 #endif
 
 
