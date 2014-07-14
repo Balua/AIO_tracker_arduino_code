@@ -72,7 +72,7 @@ void setup()
   pin_write(LED_PIN, LOW);
 
   pinMode(4, OUTPUT);
-  pin_write(4, HIGH); // enable all 5V electronics by enabling 5volt regulator
+  pin_write(4, LOW); // enable all 5V electronics by enabling 5volt regulator
 
 #ifdef SOFTSERIALDEBUG  
   softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
