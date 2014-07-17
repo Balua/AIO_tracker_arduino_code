@@ -86,8 +86,8 @@ void ublox_to_aprs(){
  
   //convert gps_lat into aprs compatible char array
   if (gps_lat >= 0){ //negative latitude = northern hemisphere "0000.00N"
-    int lat_deg=(int)(gps_lat + 0.5);   //degrees in integer format
-    float temp_lat_min=(((gps_lat-lat_deg)*60)+0.5);
+    int lat_deg=(int)(gps_lat);   //degrees in integer format
+    float temp_lat_min=(((gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
     int lat_dec_min=(int)(((temp_lat_min-lat_min)*100)+0.5);  //decimal minutes in integer format
         
@@ -95,8 +95,8 @@ void ublox_to_aprs(){
     gps_aprs_lat[8]='\0';
   }
   else{   //positive latitude = southern hemisphere "0000.00N"
-    int lat_deg=(int)(-gps_lat + 0.5);   //degrees in integer format
-    float temp_lat_min=(((-gps_lat-lat_deg)*60)+0.5);
+    int lat_deg=(int)(-gps_lat);   //degrees in integer format
+    float temp_lat_min=(((-gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
     int lat_dec_min=(int)(((temp_lat_min-lat_min)*100)+0.5);  //decimal minutes in integer format
         
@@ -106,8 +106,8 @@ void ublox_to_aprs(){
   
   //convert gps_lon into aprs compatible char array
   if (gps_lon <= 0){ //negative longitude = western hemisphere "00000.00W"
-    int lon_deg=(int)(-gps_lon + 0.5);   //degrees in integer format
-    float temp_lon_min=(((-gps_lon-lon_deg)*60)+0.5);
+    int lon_deg=(int)(-gps_lon);   //degrees in integer format
+    float temp_lon_min=(((-gps_lon-lon_deg)*60));
     int lon_min=(int)temp_lon_min;    //minutes in integer format
     int lon_dec_min=(int)(((temp_lon_min-lon_min)*100)+0.5);  //decimal minutes in integer format
         
@@ -115,8 +115,8 @@ void ublox_to_aprs(){
     gps_aprs_lon[9]='\0';
   }
   else{   //positive longitude = eastern hemisphere "00000.00E"
-    int lon_deg=(int)(gps_lon + 0.5);   //degrees in integer format
-    float temp_lon_min=(((gps_lon-lon_deg)*60)+0.5);
+    int lon_deg=(int)(gps_lon);   //degrees in integer format
+    float temp_lon_min=(((gps_lon-lon_deg)*60));
     int lon_min=(int)temp_lon_min;    //minutes in integer format
     int lon_dec_min=(int)(((temp_lon_min-lon_min)*100)+0.5);  //decimal minutes in integer format
         
