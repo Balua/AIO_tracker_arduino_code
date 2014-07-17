@@ -38,7 +38,7 @@
 // - Cars:       9
 // - Home:       0
 // - IGate:      5
-#define S_CALLSIGN      "CR6BAL"  //callsign duarte - mudar para o callsign da ana
+#define S_CALLSIGN      "NOCALL"  //callsign duarte - mudar para o callsign da ana
 #define S_CALLSIGN_ID   11
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
@@ -89,6 +89,7 @@
 #define GPS_BAUDRATE  9600
 
 #define GPSEN_PIN 5   //This is the digital pin where the uBlox gps receiver's enable is connected. force LOW to activate GPS
+#define EN5V_PIN 4    //This is the digital pin where the 5V regulator enable is connected. force HIGH to activate 5V devices
 // --------------------------------------------------------------------------
 // Modem config (afsk.cpp)
 // --------------------------------------------------------------------------

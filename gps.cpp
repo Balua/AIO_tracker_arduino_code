@@ -67,10 +67,7 @@ void gps_setup() {
 
 void ublox_to_aprs(){
   
-#ifdef DEBUG_GPS
-      softdebug.println("entering ublox_to_aprs()");    
-#endif
-  
+
   char temp_buffer[9];
   
   unsigned long fix_age, time, date;
@@ -85,7 +82,7 @@ void ublox_to_aprs(){
   ublox.f_get_position(&gps_lat, &gps_lon, &fix_age);
  
   //convert gps_lat into aprs compatible char array
-  if (gps_lat >= 0){ //negative latitude = northern hemisphere "0000.00N"
+  if (gps_lat >= 0){ //positive latitude = northern hemisphere "0000.00N"
     int lat_deg=(int)(gps_lat);   //degrees in integer format
     float temp_lat_min=(((gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
@@ -94,7 +91,7 @@ void ublox_to_aprs(){
     sprintf(gps_aprs_lat, "%02d%02d.%02dN", lat_deg,lat_min,lat_dec_min);
     gps_aprs_lat[8]='\0';
   }
-  else{   //positive latitude = southern hemisphere "0000.00N"
+  else{   //negative latitude = southern hemisphere "0000.00N"
     int lat_deg=(int)(-gps_lat);   //degrees in integer format
     float temp_lat_min=(((-gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
@@ -136,6 +133,8 @@ void ublox_to_aprs(){
   
   #ifdef DEBUG_GPS
       softdebug.println("GPS Data: Time Lat Long APRS_Lat APRS_Long Alt Crs Spd LVP");  //Crs=course, Spd=speed,LVP=last valid position
+      softdebug.print(gps_time);
+      softdebug.print(" ");
       softdebug.print(gps_lat);
       softdebug.print(" ");
       softdebug.print(gps_lon);
@@ -150,8 +149,7 @@ void ublox_to_aprs(){
       softdebug.print(" ");
       softdebug.print(gps_speed);
       softdebug.print(" ");
-      softdebug.println(gps_fix_age);
-      softdebug.println("exiting ublox_to_aprs()");    
+      softdebug.println(gps_fix_age);   
      
   #endif
   

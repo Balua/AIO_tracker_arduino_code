@@ -62,7 +62,7 @@ TinyGPS ublox;
 
 //configure softserial port for debuging purposes
 #ifdef SOFTSERIALDEBUG
-SoftwareSerial softdebug(A2, A3);
+SoftwareSerial softdebug(A2, A3);   //RX,TX
 #endif
 
 
@@ -71,8 +71,8 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
-  pinMode(4, OUTPUT);
-  pin_write(4, LOW); // enable all 5V electronics by enabling 5volt regulator
+  pinMode(EN5V_PIN, OUTPUT);
+  pin_write(EN5V_PIN, LOW); // disable all 5V electronics by enabling 5volt regulator
 
 #ifdef SOFTSERIALDEBUG  
   softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
@@ -109,9 +109,6 @@ void setup()
 
 void get_pos()
 {
-#ifdef DEBUG_GPS
-      softdebug.println("entering get_pos()");    
-#endif
   char c;
   // Get a valid position from the GPS
   int valid_pos = 0;
@@ -129,22 +126,20 @@ void get_pos()
   if (valid_pos){
    ublox_to_aprs(); 
   }
-#ifdef DEBUG_GPS
-      softdebug.println("exiting get_pos()");    
-#endif
 }
 
 void loop()
 {  
   // Time for another APRS frame
   if ((int32_t) (millis() - next_aprs) >= 0) {
+    pin_write(EN5V_PIN, HIGH); // enable all 5V electronics by enabling 5volt regulator
     get_pos();
     aprs_send();
     next_aprs += APRS_PERIOD * 1000L;
     while (afsk_flush()) {
       power_save();
     }
-
+    pin_write(EN5V_PIN, LOW); // disable all 5V electronics by disabling 5volt regulator
 #ifdef DEBUG_MODEM
     // Show modem ISR stats from the previous transmission
     afsk_debug();
