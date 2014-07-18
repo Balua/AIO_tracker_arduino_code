@@ -126,6 +126,15 @@ void get_pos()
   if (valid_pos){
    ublox_to_aprs(); 
   }
+
+#ifdef DEBUG_GPS
+    
+    if (gps_fix_age > 5000)
+        softdebug.println("NO FIX");
+      else
+        softdebug.println("GPS OK");    
+#endif
+  
 }
 
 void loop()

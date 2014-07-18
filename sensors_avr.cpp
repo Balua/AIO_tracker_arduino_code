@@ -34,7 +34,7 @@
 
 int sensors_vin()
 {
-  analogReference(DEFAULT);      // Ref=5V
+  analogReference(DEFAULT);      // Ref=3.3V
   analogRead(VMETER_PIN);        // Disregard the 1st conversion after changing ref (p.256)
   delay(10);                     // This is needed when switching references
 

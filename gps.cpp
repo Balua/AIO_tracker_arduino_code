@@ -45,7 +45,7 @@ char gps_aprs_lon[10];
 float gps_course = 0;
 float gps_speed = 0;
 float gps_altitude = 0;
-unsigned int gps_fix_age = 0;
+unsigned int gps_fix_age = 9999;
 
 void gps_setup() {
   strcpy(gps_time, "000000");
@@ -67,17 +67,23 @@ void gps_setup() {
 
 void ublox_to_aprs(){
   
-
+/*
   char temp_buffer[9];
-  
   unsigned long fix_age, time, date;
- 
   // time in hhmmsscc, date in ddmmyy
   ublox.get_datetime(&date, &time, &fix_age);
   ltoa(time,temp_buffer,10); //convert gps time into char array
+  
   strncpy(gps_time,temp_buffer,6); //copy gps time chars to correct string eliminating the last two hundredths of second digits
-  gps_time[6] = '\0';
- 
+  gps_time[6] = '\0';*/
+ //=================
+ int year;
+byte month, day, hour, minute, second, hundredths;
+unsigned long fix_age;
+  ublox.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
+  sprintf(gps_time, "%02d%02d%02d", hour,minute,second);
+  strcat(gps_time,'\0');
+ //================
   // returns +/- latitude/longitude in degrees
   ublox.f_get_position(&gps_lat, &gps_lon, &fix_age);
  
@@ -130,30 +136,29 @@ void ublox_to_aprs(){
   // Last Valid Position in seconds
   gps_fix_age=(unsigned int) fix_age/1000;
 
-  
+
   #ifdef DEBUG_GPS
-      softdebug.println("GPS Data: Time Lat Long APRS_Lat APRS_Long Alt Crs Spd LVP");  //Crs=course, Spd=speed,LVP=last valid position
-      softdebug.print(gps_time);
-      softdebug.print(" ");
-      softdebug.print(gps_lat);
-      softdebug.print(" ");
-      softdebug.print(gps_lon);
-      softdebug.print(" ");
-      softdebug.print(gps_aprs_lat);
-      softdebug.print(" ");
-      softdebug.print(gps_aprs_lon);
-      softdebug.print(" ");
-      softdebug.print(gps_altitude);
-      softdebug.print(" ");
-      softdebug.print(gps_course);
-      softdebug.print(" ");
-      softdebug.print(gps_speed);
-      softdebug.print(" ");
-      softdebug.println(gps_fix_age);   
-     
+    softdebug.println();  
+    softdebug.println("GPS Data: Time Lat Long APRS_Lat APRS_Long Alt Crs Spd LVP");  //Crs=course, Spd=speed,LVP=last valid position
+    softdebug.print(gps_time);
+    softdebug.print(" ");
+    softdebug.print(gps_lat);
+    softdebug.print(" ");
+    softdebug.print(gps_lon);
+    softdebug.print(" ");
+    softdebug.print(gps_aprs_lat);
+    softdebug.print(" ");
+    softdebug.print(gps_aprs_lon);
+    softdebug.print(" ");
+    softdebug.print(gps_altitude);
+    softdebug.print(" ");
+    softdebug.print(gps_course);
+    softdebug.print(" ");
+    softdebug.print(gps_speed);
+    softdebug.print(" ");
+    softdebug.println(gps_fix_age);     
   #endif
-  
-  
+
 }
 
 
