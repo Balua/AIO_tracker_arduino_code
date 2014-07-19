@@ -158,7 +158,20 @@ void update_fix_age(){
   long lat, lon;
   
   ublox.get_position(&lat, &lon, &fix_age);  // Last Valid Position in milliseconds
-  gps_fix_age=(unsigned int)fix_age/1000;   // Last Valid Position in seconds
+  
+  gps_fix_age=(unsigned int)(fix_age/1000);   // Last Valid Position in seconds
+  
+  if (gps_fix_age>9999)
+    gps_fix_age=9999;
+    
+  
+   #ifdef DEBUG_GPS
+    softdebug.println();
+    softdebug.print("Last fix (millisec/sec)");   
+    softdebug.print(fix_age); 
+    softdebug.print("/");
+    softdebug.println(gps_fix_age);     
+  #endif
 
 }
 

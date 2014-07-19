@@ -124,6 +124,13 @@
 // Voltage meter analog pin
 #define VMETER_PIN      0     //o nosso está no analog 0
 
+//Unique bus address for pressure sensor
+#define sensor 0x28 
+
+// Temperature sensor data wire is plugged into port 9 on the Arduino
+#define ONE_WIRE_BUS 9
+
+
 // --------------------------------------------------------------------------
 // Debug
 // --------------------------------------------------------------------------

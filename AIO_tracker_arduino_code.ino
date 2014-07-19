@@ -134,7 +134,7 @@ void get_pos()
 
 #ifdef DEBUG_GPS
     
-    if (gps_fix_age > 5000)
+    if (gps_fix_age > 5)
         softdebug.println("NO FIX");
       else
         softdebug.println("GPS OK");    

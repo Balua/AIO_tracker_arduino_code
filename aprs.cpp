@@ -79,7 +79,7 @@ void aprs_send()
   snprintf(temp, 6, "%d", sensors_vin());
   ax25_send_string(temp);
   ax25_send_string("/AP=");
-  snprintf(temp, 6, "%06ld", sensors_pressure());
+  snprintf(temp, 7, "%05ld", sensors_pressure());
   ax25_send_string(temp);
   ax25_send_byte(' ');
   ax25_send_string(APRS_COMMENT);     // Comment
