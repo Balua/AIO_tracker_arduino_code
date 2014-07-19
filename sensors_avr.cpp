@@ -31,6 +31,14 @@
 #else
 #  include <WProgram.h>
 #endif
+#include <SoftwareSerial.h>
+#include<Wire.h>
+
+#ifdef SOFTSERIALDEBUG
+extern SoftwareSerial softdebug;
+#endif
+
+#define sensor 0x28 //Unique bus address for pressure sensor
 
 int sensors_vin()
 {
@@ -45,6 +53,53 @@ int sensors_vin()
   int vin = (uint32_t)mV * (VMETER_R1 + VMETER_R2) / VMETER_R2;
   return vin;
 }
+
+
+void getdata(byte *a, byte *b)
+{
+  Wire.requestFrom(sensor,2);//Sends content of first two registers
+  *a = Wire.read(); //first byte recieved stored here
+  *b = Wire.read(); //second byte recieved stored here
+}
+
+long sensors_pressure()
+{
+  byte aa,bb;
+  float pressure =0;
+  getdata(&aa,&bb);
+  float c = aa*256+bb;//combines byte 1 and byte 2
+  pressure= ((c-1638)*1.0342)/(14745-1638)*100000;// Conversion found from technical notes/ pressure is in bar
+  
+  //const float p0 = 101325;     // Pressure at sea level (Pa)
+  //long press_alt = (float)44330.0 * (1.0 - pow(((float) pressure/p0), 0.190295)); //convert pressure value in pressure altitude (m)
+  
+   
+#ifdef DEBUG_SENS  
+  softdebug.println();
+  softdebug.print("Pressure:");
+  softdebug.print(pressure);
+  softdebug.println(" Pa");
+  /*softdebug.print("Pressure Altitude");
+  softdebug.print(press_alt);
+  softdebug.println("m");*/
+#endif
+    
+  return (long) pressure;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #endif // ifdef AVR

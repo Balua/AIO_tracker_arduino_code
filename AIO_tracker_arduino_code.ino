@@ -50,6 +50,7 @@
 #endif
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
+#include <Wire.h>
 
 // Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
@@ -84,7 +85,8 @@ void setup()
 #endif
   gps_setup();
   afsk_setup();
-
+  Wire.begin();//Wakes up I2C bus 
+  
 #ifdef DEBUG_SENS
   softdebug.print(", Vin=");
   softdebug.println(sensors_vin());
@@ -124,7 +126,10 @@ void get_pos()
   } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
   // stop loop if valid position=TRUE or if defined timeout is reached (definition on AIO_Tracker_arduino_code.ino)
   if (valid_pos){
-   ublox_to_aprs(); 
+   ublox_to_aprs(); //get tinygps data and generate aprs strings
+  }
+  else{
+  update_fix_age();  //update the variable which holds the time since the last valid position
   }
 
 #ifdef DEBUG_GPS

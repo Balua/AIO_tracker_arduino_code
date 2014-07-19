@@ -67,23 +67,13 @@ void gps_setup() {
 
 void ublox_to_aprs(){
   
-/*
-  char temp_buffer[9];
-  unsigned long fix_age, time, date;
-  // time in hhmmsscc, date in ddmmyy
-  ublox.get_datetime(&date, &time, &fix_age);
-  ltoa(time,temp_buffer,10); //convert gps time into char array
-  
-  strncpy(gps_time,temp_buffer,6); //copy gps time chars to correct string eliminating the last two hundredths of second digits
-  gps_time[6] = '\0';*/
- //=================
  int year;
 byte month, day, hour, minute, second, hundredths;
 unsigned long fix_age;
   ublox.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
   sprintf(gps_time, "%02d%02d%02d", hour,minute,second);
   strcat(gps_time,'\0');
- //================
+
   // returns +/- latitude/longitude in degrees
   ublox.f_get_position(&gps_lat, &gps_lon, &fix_age);
  
@@ -161,5 +151,15 @@ unsigned long fix_age;
 
 }
 
+
+void update_fix_age(){
+  
+  unsigned long fix_age;
+  long lat, lon;
+  
+  ublox.get_position(&lat, &lon, &fix_age);  // Last Valid Position in milliseconds
+  gps_fix_age=(unsigned int)fix_age/1000;   // Last Valid Position in seconds
+
+}
 
 

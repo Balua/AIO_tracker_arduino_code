@@ -34,5 +34,6 @@ extern unsigned int gps_fix_age;
 
 void gps_setup();
 void ublox_to_aprs();
+void update_fix_age(); 
 
 #endif

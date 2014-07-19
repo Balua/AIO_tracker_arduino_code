@@ -20,6 +20,7 @@
 #define __SENSORS_AVR_H__
 
 int sensors_vin();
+long sensors_pressure();
 
 #endif // ifndef __SENSORS_AVR_H__
 #endif // ifdef AVR

@@ -38,7 +38,7 @@
 // - Cars:       9
 // - Home:       0
 // - IGate:      5
-#define S_CALLSIGN      "NOCALL"  //callsign duarte - mudar para o callsign da ana
+#define S_CALLSIGN      "CT1EQV"  //callsign duarte - mudar para o callsign da anacom
 #define S_CALLSIGN_ID   11
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
@@ -179,7 +179,7 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
-// #define DEBUG_SENS   // Sensors
+#define DEBUG_SENS   // Sensors
 #ifdef DEBUG_SENS  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
