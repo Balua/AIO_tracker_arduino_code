@@ -11,11 +11,13 @@
 ###### - led, 
 ###### - all the control pins 
 
-#### -First launch sucessfull with this PCB where all this features were sucessfully tested!
+##### - First launch sucessfull with this PCB where all this features were sucessfully tested!
+____________________________________
 
 #### What was also tested:
 
 ##### - RTTY on the RFM22b also sucessfully tested in ground, still not impleted in the main code.
+____________________________________
 
 #### What is Missing:
 
