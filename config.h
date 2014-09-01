@@ -186,7 +186,7 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
-// #define DEBUG_SENS   // Sensors
+ #define DEBUG_SENS   // Sensors
 #ifdef DEBUG_SENS  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif

@@ -51,6 +51,8 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 #include <Wire.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 // Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms

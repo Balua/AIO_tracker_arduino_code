@@ -101,21 +101,17 @@ long sensors_pressure(){
 
 
 
-long sensors_temperature(){
-  
-  int  temperature=0;
-  
-
-
+int sensors_temperature(){
+    
+// call temp_sensor.requestTemperatures() to issue a global temperature request to all devices on the bus
+  temp_sensor.requestTemperatures(); // Send the command to get temperatures
+// call temp_sensor.getTempC to read temperature in degrees Celsius from the device
+  int temperature =(int) temp_sensor.getTempC(insideThermometer);
  
 #ifdef DEBUG_SENS  
   softdebug.println();
-  softdebug.print("Pressure:");
-  softdebug.print(pressure);
-  softdebug.println(" Pa");
-  softdebug.print("Pressure Altitude");
-  softdebug.print(press_alt);
-  softdebug.println("m");
+  softdebug.print("Temp C: ");
+  softdebug.println(temperature);
 #endif
     
   return temperature;
@@ -123,32 +119,33 @@ long sensors_temperature(){
 
 
 
-void sensor_setup(){
-
-  
+void sensor_setup(){  //initialize one wire sensor and configure sensor parameters 
   temp_sensor.begin();
-
-
+  temp_sensor.setResolution(insideThermometer, 9);
+  
+  temp_sensor.requestTemperatures(); // Send the command to get temperatures
+  int temperature =(int) temp_sensor.getTempC(insideThermometer);
+  
 #ifdef DEBUG_SENS
   // report on finding the devices on the bus or not
-  if (!sensors.getAddress(insideThermometer, 0)){
-    softdebug.println("Unable to find address for Device 0");
-  }
+  if (!temp_sensor.getAddress(insideThermometer, 0)) softdebug.println("Unable to find address for Device 0");
   else{  
     // report parasite power requirements
     softdebug.print("Parasite power is: "); 
-    if (sensors.isParasitePowerMode()) softdebug.println("ON");
+    if (temp_sensor.isParasitePowerMode()) softdebug.println("ON");
     else softdebug.println("OFF");
-    
+     
+    softdebug.println();
+    softdebug.print("Temp C: ");
+    softdebug.println(temperature);
   }
-  
-  
-#endif
-
-
-
-
-
-
+#endif //DEBUG_SENS
 }
+
+
+
+
+
+
+
 #endif // ifdef AVR
