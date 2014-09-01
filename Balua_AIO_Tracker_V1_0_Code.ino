@@ -73,7 +73,7 @@ void setup()
   pin_write(LED_PIN, LOW);
 
   pinMode(EN5V_PIN, OUTPUT);
-  pin_write(EN5V_PIN, LOW); // disable all 5V electronics by enabling 5volt regulator
+  pin_write(EN5V_PIN, LOW); // enable all 5V electronics by enabling 5volt regulator
 
 #ifdef SOFTSERIALDEBUG  
   softdebug.begin(SOFTSERIALDEBUG_BAUDRATE);
@@ -85,6 +85,7 @@ void setup()
 #endif
   gps_setup();
   afsk_setup();
+  sensor_setup();
   Wire.begin();//Wakes up I2C bus 
   
 #ifdef DEBUG_SENS

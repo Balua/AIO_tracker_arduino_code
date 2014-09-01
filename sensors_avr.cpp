@@ -32,14 +32,25 @@
 #  include <WProgram.h>
 #endif
 
+
+
 #include <SoftwareSerial.h>
 #include <Wire.h>
+
+#define ONE_WIRE_BUS 9
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 #ifdef SOFTSERIALDEBUG
 extern SoftwareSerial softdebug;
 #endif
 
-
+// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
+OneWire temp_sensor_wire(ONE_WIRE_BUS);
+// Pass our oneWire reference to Dallas Temperature.
+DallasTemperature temp_sensor(&temp_sensor_wire);
+// arrays to hold device address
+DeviceAddress insideThermometer = { 0x28, 0x36, 0x91, 0x8E, 0x05, 0x00, 0x00, 0xC2 };
 
 int sensors_vin()
 {
@@ -90,18 +101,54 @@ long sensors_pressure(){
 
 
 
+long sensors_temperature(){
+  
+  int  temperature=0;
+  
+
+
+ 
+#ifdef DEBUG_SENS  
+  softdebug.println();
+  softdebug.print("Pressure:");
+  softdebug.print(pressure);
+  softdebug.println(" Pa");
+  softdebug.print("Pressure Altitude");
+  softdebug.print(press_alt);
+  softdebug.println("m");
+#endif
+    
+  return temperature;
+}
+
+
+
+void sensor_setup(){
+
+  
+  temp_sensor.begin();
+
+
+#ifdef DEBUG_SENS
+  // report on finding the devices on the bus or not
+  if (!sensors.getAddress(insideThermometer, 0)){
+    softdebug.println("Unable to find address for Device 0");
+  }
+  else{  
+    // report parasite power requirements
+    softdebug.print("Parasite power is: "); 
+    if (sensors.isParasitePowerMode()) softdebug.println("ON");
+    else softdebug.println("OFF");
+    
+  }
+  
+  
+#endif
 
 
 
 
 
 
-
-
-
-
-
-
-
-
+}
 #endif // ifdef AVR

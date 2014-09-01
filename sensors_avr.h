@@ -21,6 +21,8 @@
 
 int sensors_vin();
 long sensors_pressure();
+long sensors_temperature();
+void sensor_setup();
 
 #endif // ifndef __SENSORS_AVR_H__
 #endif // ifdef AVR
