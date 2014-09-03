@@ -175,7 +175,7 @@ unsigned long fix_age;
     sprintf(gps_aprs_lat, "%02d%02d.%02dN", lat_deg,lat_min,lat_dec_min);
     gps_aprs_lat[8]='\0';
   }
-  else{   //negative latitude = southern hemisphere "0000.00N"
+  else{   //negative latitude = southern hemisphere "0000.00S"
     int lat_deg=(int)(-gps_lat);   //degrees in integer format
     float temp_lat_min=(((-gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
