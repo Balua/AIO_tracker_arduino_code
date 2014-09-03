@@ -119,26 +119,29 @@ int sensors_temperature(){
 
 
 
-void sensor_setup(){  //initialize one wire sensor and configure sensor parameters 
-  temp_sensor.begin();
-  temp_sensor.setResolution(insideThermometer, 9);
+void sensor_setup(){  
+  temp_sensor.begin();//initialize one wire sensor
+  temp_sensor.setResolution(insideThermometer, 9);  //configure sensor parameters 
   
-  temp_sensor.requestTemperatures(); // Send the command to get temperatures
-  int temperature =(int) temp_sensor.getTempC(insideThermometer);
-  
+   
 #ifdef DEBUG_SENS
   // report on finding the devices on the bus or not
   if (!temp_sensor.getAddress(insideThermometer, 0)) softdebug.println("Unable to find address for Device 0");
   else{  
+    
     // report parasite power requirements
     softdebug.print("Parasite power is: "); 
     if (temp_sensor.isParasitePowerMode()) softdebug.println("ON");
     else softdebug.println("OFF");
-     
-    softdebug.println();
-    softdebug.print("Temp C: ");
-    softdebug.println(temperature);
+    
+    sensors_temperature(); //print temperature for debugging
+    
   }
+  
+  //print voltage sensor value for debugging
+  softdebug.print("Vin=");
+  softdebug.println(sensors_vin());
+  
 #endif //DEBUG_SENS
 }
 

@@ -89,11 +89,7 @@ void setup()
   afsk_setup();
   sensor_setup();
   Wire.begin();//Wakes up I2C bus 
-  
-#ifdef DEBUG_SENS
-  softdebug.print(", Vin=");
-  softdebug.println(sensors_vin());
-#endif
+ 
 
   // Do not start until we get a valid time reference
   // for slotted transmissions.

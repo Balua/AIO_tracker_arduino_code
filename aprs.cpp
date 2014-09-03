@@ -40,6 +40,12 @@ float meters_to_feet(float m)
   return m / 0.3048;
 }
 
+float kmh_to_knots(float m)
+{
+  // 1 knott = 1.852 kmh
+  return m / 1.852;
+}
+
 // Exported functions
 void aprs_send()
 {
@@ -67,7 +73,7 @@ void aprs_send()
   snprintf(temp, 4, "%03d", (int)(gps_course + 0.5)); 
   ax25_send_string(temp);             // Course (degrees)
   ax25_send_byte('/');                // and
-  snprintf(temp, 4, "%03d", (int)(gps_speed + 0.5));
+  snprintf(temp, 4, "%03d", (int)(kmh_to_knots(gps_speed) + 0.5));
   ax25_send_string(temp);             // speed (knots)
   ax25_send_string("/A=");            // Altitude (meters). Goes anywhere in the comment area
   snprintf(temp, 7, "%06ld", (long)(meters_to_feet(gps_altitude) + 0.5));
@@ -77,6 +83,9 @@ void aprs_send()
   ax25_send_string(temp);
   ax25_send_string("/V=");
   snprintf(temp, 6, "%d", sensors_vin());
+  ax25_send_string(temp);
+  ax25_send_string("/T=");
+  snprintf(temp, 4, "%d", sensors_temperature());
   ax25_send_string(temp);
   ax25_send_string("/AP=");
   snprintf(temp, 7, "%05ld", sensors_pressure());
