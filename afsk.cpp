@@ -241,4 +241,12 @@ AFSK_ISR
   afsk_clear_interrupt_flag();
 }
 
+#ifdef DEBUG_MODEM
+void afsk_debug()
+{
+  softdebug.print("fifo overruns=");
+  softdebug.println(sample_overruns);
 
+  sample_overruns = 0;
+}
+#endif
