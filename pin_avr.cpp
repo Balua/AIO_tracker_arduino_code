@@ -52,4 +52,3 @@ void pin_write(uint8_t pin, uint8_t val)
 }
 
 #endif  // AVR
-
