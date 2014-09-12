@@ -16,14 +16,10 @@
  */
 
 #ifdef AVR
-#ifndef __SENSORS_AVR_H__
-#define __SENSORS_AVR_H__
+#ifndef __CARD_H__
+#define __CARD_H__
 
-int sensors_vin();
-long sensors_pressure();
-int sensors_temperature();
-void sensor_setup();
-
+int sdcard_setup();
 
 #endif // ifndef __SENSORS_AVR_H__
 #endif // ifdef AVR

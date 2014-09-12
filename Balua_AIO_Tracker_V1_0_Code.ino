@@ -41,6 +41,7 @@
 #include "pin.h"
 #include "power.h"
 #include "sensors_avr.h"
+#include "card.h"
 
 // Arduino/AVR libs
 #if (ARDUINO + 1) >= 100
@@ -53,15 +54,14 @@
 #include <Wire.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <SD.h>
 
-// Module constants
+// APRS Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
-
-// Module variables
+// APRS Module variables
 static int32_t next_aprs = 0;
-
-//initialize tinygps object named ublox  
-TinyGPS ublox;
+//declare ublox varible as extern because it is already defined in gps file
+extern TinyGPS ublox;
 
 //configure softserial port for debuging purposes
 #ifdef SOFTSERIALDEBUG
@@ -88,8 +88,10 @@ void setup()
   gps_setup();
   afsk_setup();
   sensor_setup();
+  sdcard_setup();
   Wire.begin();//Wakes up I2C bus 
  
+
 
   // Do not start until we get a valid time reference
   // for slotted transmissions.
@@ -132,7 +134,6 @@ void get_pos()
   }
 
 #ifdef DEBUG_GPS
-    
     if (gps_fix_age > 5)
         softdebug.println("NO FIX");
       else
@@ -153,10 +154,6 @@ void loop()
       power_save();
     }
     pin_write(EN5V_PIN, LOW); // disable all 5V electronics by disabling 5volt regulator
-#ifdef DEBUG_MODEM
-    // Show modem ISR stats from the previous transmission
-    afsk_debug();
-#endif
   }
 
   power_save(); // Incoming GPS data or interrupts will wake us up
