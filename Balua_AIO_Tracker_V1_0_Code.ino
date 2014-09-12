@@ -39,7 +39,7 @@
 #include "aprs.h"
 #include "gps.h"
 #include "pin.h"
-#include "power.h"
+//#include "power.h"
 #include "sensors_avr.h"
 #include "card.h"
 
@@ -97,8 +97,8 @@ void setup()
   // for slotted transmissions.
   if (APRS_SLOT >= 0) {
     do {
-      while (! Serial.available())  ///enquanto nao houver bytes na porta serial - > sem sinal GPS
-        power_save();  //entrar em power save ate ao sinal seguinte...
+      //while (! Serial.available())  ///enquanto nao houver bytes na porta serial - > sem sinal GPS
+        //power_save();  //entrar em power save ate ao sinal seguinte...
     } while (! ublox.encode(Serial.read()));//ir acordando e adormecendo enquanto nao se conseguir descodificar uma frase completa
     
     next_aprs = millis() + 1000 *
@@ -150,11 +150,11 @@ void loop()
     get_pos();
     aprs_send();
     next_aprs += APRS_PERIOD * 1000L;
-    while (afsk_flush()) {
-      power_save();
-    }
+    //while (afsk_flush()) {
+      //power_save();
+    //}
     pin_write(EN5V_PIN, LOW); // disable all 5V electronics by disabling 5volt regulator
   }
 
-  power_save(); // Incoming GPS data or interrupts will wake us up
+  //power_save(); // Incoming GPS data or interrupts will wake us up
 }

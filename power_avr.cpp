@@ -14,6 +14,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+ 
+ /*
 #ifdef AVR
 
 #include <avr/power.h>
@@ -43,6 +45,8 @@ void disable_bod_and_sleep()
    * The catch is that we *must* go to sleep between 2
    * and 3, ie. just before BODS turns 0.
    */
+   
+   /*
   unsigned char mcucr;
 
   cli();
@@ -62,6 +66,7 @@ void power_save()
    * voltage.
    */
 
+/*
   set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();
   power_adc_disable();
@@ -78,3 +83,4 @@ void power_save()
 
 
 #endif // #ifdef AVR
+*/
