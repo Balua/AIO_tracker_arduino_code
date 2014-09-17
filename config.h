@@ -161,7 +161,7 @@
 
 
 
-// #define DEBUG_GPS    // GPS sentence dump and checksum validation
+ #define DEBUG_GPS    // GPS sentence dump and checksum validation
 #ifdef DEBUG_GPS  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
@@ -183,11 +183,6 @@
 
 // #define DEBUG_SENS   // Sensors
 #ifdef DEBUG_SENS  
-  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
-#endif
-
-// #define DEBUG_SD_CARD   // Sensors
-#ifdef DEBUG_SD_CARD  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
