@@ -41,7 +41,6 @@
 #include "pin.h"
 #include "power.h"
 #include "sensors_avr.h"
-#include "card.h"
 
 // Arduino/AVR libs
 #if (ARDUINO + 1) >= 100
@@ -88,7 +87,6 @@ void setup()
   gps_setup();
   afsk_setup();
   sensor_setup();
-  sdcard_setup();
   Wire.begin();//Wakes up I2C bus 
  
 
