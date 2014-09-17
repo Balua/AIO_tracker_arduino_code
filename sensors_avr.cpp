@@ -37,7 +37,7 @@
 #include <SoftwareSerial.h>
 #include <Wire.h>
 
-
+#define ONE_WIRE_BUS 9
 #include <OneWire.h>
 #include <DallasTemperature.h>
 

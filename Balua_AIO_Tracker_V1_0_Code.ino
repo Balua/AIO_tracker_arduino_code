@@ -123,7 +123,7 @@ void get_pos()
 #endif
     }
   } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
-  // stop loop if valid position=TRUE or if defined timeout is reached 
+  // stop loop if valid position=TRUE or if defined timeout is reached (definition on AIO_Tracker_arduino_code.ino)
   if (valid_pos){
    ublox_to_aprs(); //get tinygps data and generate aprs strings
   }
