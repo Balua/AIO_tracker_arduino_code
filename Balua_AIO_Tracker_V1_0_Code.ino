@@ -117,10 +117,10 @@ void get_pos()
   do {
     if (Serial.available()){
       c=Serial.read();
-      valid_pos = ublox.encode(c);
 #ifdef DEBUG_GPS
       softdebug.print(c);
 #endif
+      valid_pos = ublox.encode(c);
     }
   } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
   // stop loop if valid position=TRUE or if defined timeout is reached 

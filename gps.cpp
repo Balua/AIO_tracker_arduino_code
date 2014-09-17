@@ -119,17 +119,13 @@ void gps_setup() {
   
   byte gps_set_sucess = 0 ;
   
+  Serial.begin(GPS_BAUDRATE);
+  
   //enable the digital pin where the uBlox gps receiver's enable is connected. 
 //force LOW to activate GPS
   pinMode(GPSEN_PIN, OUTPUT);
   pin_write(GPSEN_PIN, LOW);
-  
-  Serial.begin(GPS_BAUDRATE);
-  
-#ifdef DEBUG_GPS
-      softdebug.println("Setting flight mode");
-#endif
-
+    
 
 //settting flight mode
 //  THIS COMMAND SETS FLIGHT MODE AND CONFIRMS IT 
@@ -251,15 +247,6 @@ void update_fix_age(){
   
   if (gps_fix_age>9999)
     gps_fix_age=9999;
-    
-  
-#ifdef DEBUG_GPS
-    softdebug.println();
-    softdebug.print("Last fix (millisec/sec)");   
-    softdebug.print(fix_age); 
-    softdebug.print("/");
-    softdebug.println(gps_fix_age);     
-#endif
 
 } //void update_fix_age()
 
