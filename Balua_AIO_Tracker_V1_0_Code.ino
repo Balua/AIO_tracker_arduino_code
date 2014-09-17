@@ -70,6 +70,8 @@ SoftwareSerial softdebug(A2, A3);   //RX,TX
 
 void setup()
 {
+  
+  delay(100);
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
