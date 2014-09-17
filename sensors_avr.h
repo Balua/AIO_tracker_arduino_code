@@ -24,6 +24,5 @@ long sensors_pressure();
 int sensors_temperature();
 void sensor_setup();
 
-
 #endif // ifndef __SENSORS_AVR_H__
 #endif // ifdef AVR

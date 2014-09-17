@@ -53,14 +53,15 @@
 #include <Wire.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include <SD.h>
 
-// APRS Module constants
+// Module constants
 static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
-// APRS Module variables
+
+// Module variables
 static int32_t next_aprs = 0;
-//declare ublox varible as extern because it is already defined in gps file
-extern TinyGPS ublox;
+
+//initialize tinygps object named ublox  
+TinyGPS ublox;
 
 //configure softserial port for debuging purposes
 #ifdef SOFTSERIALDEBUG
@@ -70,8 +71,6 @@ SoftwareSerial softdebug(A2, A3);   //RX,TX
 
 void setup()
 {
-  
-  delay(100);
   pinMode(LED_PIN, OUTPUT);
   pin_write(LED_PIN, LOW);
 
@@ -91,7 +90,6 @@ void setup()
   sensor_setup();
   Wire.begin();//Wakes up I2C bus 
  
-
 
   // Do not start until we get a valid time reference
   // for slotted transmissions.
@@ -125,7 +123,7 @@ void get_pos()
 #endif
     }
   } while ( (millis() - timeout < VALID_POS_TIMEOUT) && ! valid_pos) ; 
-  // stop loop if valid position=TRUE or if defined timeout is reached (definition on AIO_Tracker_arduino_code.ino)
+  // stop loop if valid position=TRUE or if defined timeout is reached 
   if (valid_pos){
    ublox_to_aprs(); //get tinygps data and generate aprs strings
   }
@@ -134,6 +132,7 @@ void get_pos()
   }
 
 #ifdef DEBUG_GPS
+    
     if (gps_fix_age > 5)
         softdebug.println("NO FIX");
       else
@@ -154,6 +153,10 @@ void loop()
       power_save();
     }
     pin_write(EN5V_PIN, LOW); // disable all 5V electronics by disabling 5volt regulator
+#ifdef DEBUG_MODEM
+    // Show modem ISR stats from the previous transmission
+    afsk_debug();
+#endif
   }
 
   power_save(); // Incoming GPS data or interrupts will wake us up

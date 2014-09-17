@@ -138,7 +138,7 @@
 // This is the LED pin (13 on Arduinos). The LED will be on while the AVR is
 // running and off while it's sleeping, so its brightness gives an indication
 // of the CPU activity.
-#define LED_PIN                 7 //no tracker balua o led está no pino 7
+#define LED_PIN                 7
 
 // Debug info includes printouts from different modules to aid in testing and
 // debugging.
@@ -159,15 +159,20 @@
 //    will get errors.
 
 
-//if any of the debugs is enabled, set soft serial parameters
 
- #define DEBUG_GPS    // GPS sentence dump and checksum validation
+
+// #define DEBUG_GPS    // GPS sentence dump and checksum validation
 #ifdef DEBUG_GPS  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
-// #define DEBUG_AX25   // AX.25 frame dump
+ #define DEBUG_AX25   // AX.25 frame dump
 #ifdef DEBUG_AX25  
+  #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
+#endif
+
+// #define DEBUG_MODEM  // Modem ISR overrun and profiling
+#ifdef DEBUG_MODEM  
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
@@ -186,6 +191,7 @@
   #define SOFTSERIALDEBUG  //allow the use of software serial TX on port A3
 #endif
 
+//if any of the debugs is enabled, set soft serial parameters
 #ifdef SOFTSERIALDEBUG  // if any debug enabled on soft serial:
   #define SOFTSERIALDEBUG_BAUDRATE 9600 //set softserial debug baud rate (max possible with softserial is 19800 baud)
 #endif

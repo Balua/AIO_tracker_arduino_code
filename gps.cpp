@@ -27,8 +27,7 @@
 #include <stdlib.h>
 #include <SoftwareSerial.h>
 
-//initialize tinygps object named ublox  
-TinyGPS ublox;
+extern TinyGPS ublox;
 
 #ifdef SOFTSERIALDEBUG
 extern SoftwareSerial softdebug;
@@ -159,7 +158,6 @@ void ublox_to_aprs(){
  int year;
 byte month, day, hour, minute, second, hundredths;
 unsigned long fix_age;
-
   ublox.crack_datetime(&year, &month, &day, &hour, &minute, &second, &hundredths, &fix_age);
   sprintf(gps_time, "%02d%02d%02d", hour,minute,second);
   strcat(gps_time,'\0');
@@ -177,7 +175,7 @@ unsigned long fix_age;
     sprintf(gps_aprs_lat, "%02d%02d.%02dN", lat_deg,lat_min,lat_dec_min);
     gps_aprs_lat[8]='\0';
   }
-  else{   //negative latitude = southern hemisphere "0000.00N"
+  else{   //negative latitude = southern hemisphere "0000.00S"
     int lat_deg=(int)(-gps_lat);   //degrees in integer format
     float temp_lat_min=(((-gps_lat-lat_deg)*60));
     int lat_min=(int)temp_lat_min;    //minutes in integer format
@@ -215,11 +213,9 @@ unsigned long fix_age;
   gps_speed = ublox.f_speed_kmph(); 
   // Last Valid Position in seconds
   gps_fix_age=(unsigned int) fix_age/1000;
-  
-  if (gps_fix_age>9999)
-    gps_fix_age=9999;
 
-#ifdef DEBUG_GPS
+
+  #ifdef DEBUG_GPS
     softdebug.println();  
     softdebug.println("GPS Data: Time Lat Long APRS_Lat APRS_Long Alt Crs Spd LVP");  //Crs=course, Spd=speed,LVP=last valid position
     softdebug.print(gps_time);
@@ -239,7 +235,7 @@ unsigned long fix_age;
     softdebug.print(gps_speed);
     softdebug.print(" ");
     softdebug.println(gps_fix_age);     
-#endif
+  #endif
 
 } //void ublox_to_aprs()
 
