@@ -203,12 +203,15 @@ unsigned long fix_age;
     
   // +/- altitude in meters
   gps_altitude = ublox.f_altitude(); 
+  gps_altitude = 123;
   // course in degrees
   gps_course = ublox.f_course(); 
   // speed in km/hr
   gps_speed = ublox.f_speed_kmph(); 
   // Last Valid Position in seconds
   gps_fix_age=(unsigned int) fix_age/1000;
+  if (gps_fix_age>9999)
+    gps_fix_age=9999;
 
 
   #ifdef DEBUG_GPS

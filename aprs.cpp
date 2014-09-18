@@ -78,16 +78,16 @@ void aprs_send()
   ax25_send_string("/A=");            // Altitude (meters). Goes anywhere in the comment area
   snprintf(temp, 7, "%06ld", (long)(meters_to_feet(gps_altitude) + 0.5));
   ax25_send_string(temp);
-  ax25_send_string("/LVP=");            // the number of milliseconds since the last valid gps position
-  snprintf(temp, 7, "%05u", gps_fix_age);
+  ax25_send_string("/G");            // the number of milliseconds since the last valid gps position
+  snprintf(temp, 7, "%04u", gps_fix_age);
   ax25_send_string(temp);
-  ax25_send_string("/V=");
+  ax25_send_string("/V");
   snprintf(temp, 6, "%d", sensors_vin());
   ax25_send_string(temp);
-  ax25_send_string("/T=");
+  ax25_send_string("/T");
   snprintf(temp, 4, "%d", sensors_temperature());
   ax25_send_string(temp);
-  ax25_send_string("/AP=");
+  ax25_send_string("/P");
   snprintf(temp, 7, "%05ld", sensors_pressure());
   ax25_send_string(temp);
   ax25_send_byte(' ');
