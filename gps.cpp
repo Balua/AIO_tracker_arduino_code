@@ -203,7 +203,6 @@ unsigned long fix_age;
     
   // +/- altitude in meters
   gps_altitude = ublox.f_altitude(); 
-  gps_altitude = 123;
   // course in degrees
   gps_course = ublox.f_course(); 
   // speed in km/hr
