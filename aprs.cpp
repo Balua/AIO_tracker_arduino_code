@@ -34,7 +34,7 @@ extern SoftwareSerial softdebug;
 #endif
 
 // Module functions
-float meters_to_feet(float m)
+long meters_to_feet(long m)
 {
   // 10000 ft = 3048 m
   return m / 0.3048;

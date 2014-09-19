@@ -195,6 +195,18 @@ void gps_setup() {
   }
   gps_set_sucess=0;
 
+//disable NMEA RMC sentence 
+#ifdef DEBUG_GPS
+  softdebug.print("Switching off NMEA RMC: ");
+#endif
+  uint8_t setRMC[] = { 
+  0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0xF0, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x40                   };
+  while(!gps_set_sucess)
+  {
+    sendUBX(setRMC, sizeof(setRMC)/sizeof(uint8_t));
+    gps_set_sucess=getUBX_ACK(setRMC);
+  }
+  gps_set_sucess=0;
 
 #ifdef DEBUG_GPS
       softdebug.println("GPS SETUP FINISH");
