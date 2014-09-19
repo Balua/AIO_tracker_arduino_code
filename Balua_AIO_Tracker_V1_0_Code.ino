@@ -55,7 +55,7 @@
 #include <DallasTemperature.h>
 
 // Module constants
-static const uint32_t VALID_POS_TIMEOUT = 2000;  // ms
+static const uint32_t VALID_POS_TIMEOUT = 5000;  // ms
 
 // Module variables
 static int32_t next_aprs = 0;
@@ -118,7 +118,7 @@ void get_pos()
     if (Serial.available()){
       c=Serial.read();
 #ifdef DEBUG_GPS
-      softdebug.print(c);
+      //softdebug.print(c);
 #endif
       valid_pos = ublox.encode(c);
     }

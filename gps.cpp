@@ -144,6 +144,43 @@ void gps_setup() {
   gps_set_sucess=0;
 
 #ifdef DEBUG_GPS
+  softdebug.println("Switching off NMEA GLL: ");
+#endif
+  uint8_t setGLL[] = { 
+  0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0xF0, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x2B                   };
+  while(!gps_set_sucess)
+  {		
+    sendUBX(setGLL, sizeof(setGLL)/sizeof(uint8_t));
+    gps_set_sucess=getUBX_ACK(setGLL);
+  }
+  gps_set_sucess=0;
+  
+#ifdef DEBUG_GPS
+  softdebug.println("Switching off NMEA GSA: ");
+#endif
+  uint8_t setGSA[] = { 
+  0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0xF0, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x32                   };
+  while(!gps_set_sucess)
+  {	
+    sendUBX(setGSA, sizeof(setGSA)/sizeof(uint8_t));
+    gps_set_sucess=getUBX_ACK(setGSA);
+  }
+  gps_set_sucess=0;
+  
+#ifdef DEBUG_GPS
+  softdebug.println("Switching off NMEA GSV: ");
+#endif
+  uint8_t setGSV[] = { 
+  0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0xF0, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x39                   };
+  while(!gps_set_sucess)
+  {
+    sendUBX(setGSV, sizeof(setGSV)/sizeof(uint8_t));
+    gps_set_sucess=getUBX_ACK(setGSV);
+  }
+  gps_set_sucess=0;
+
+
+#ifdef DEBUG_GPS
       softdebug.println("GPS SETUP FINISH");
 #endif
 } //void gps_setup()
