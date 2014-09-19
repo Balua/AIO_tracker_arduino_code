@@ -143,6 +143,7 @@ void gps_setup() {
   }
   gps_set_sucess=0;
 
+//disable NMEA GLL sentence
 #ifdef DEBUG_GPS
   softdebug.println("Switching off NMEA GLL: ");
 #endif
@@ -154,7 +155,8 @@ void gps_setup() {
     gps_set_sucess=getUBX_ACK(setGLL);
   }
   gps_set_sucess=0;
-  
+
+//disable NMEA GSA sentence  
 #ifdef DEBUG_GPS
   softdebug.println("Switching off NMEA GSA: ");
 #endif
@@ -166,7 +168,8 @@ void gps_setup() {
     gps_set_sucess=getUBX_ACK(setGSA);
   }
   gps_set_sucess=0;
-  
+
+//disable NMEA GSV sentence  
 #ifdef DEBUG_GPS
   softdebug.println("Switching off NMEA GSV: ");
 #endif
@@ -176,6 +179,19 @@ void gps_setup() {
   {
     sendUBX(setGSV, sizeof(setGSV)/sizeof(uint8_t));
     gps_set_sucess=getUBX_ACK(setGSV);
+  }
+  gps_set_sucess=0;
+
+//disable NMEA VTG sentence  
+#ifdef DEBUG_GPS
+  softdebug.println("Switching off NMEA VTG: ");
+#endif
+  uint8_t setVTG[] = { 
+  0xB5, 0x62, 0x06, 0x01, 0x08, 0x00, 0xF0, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x46                   };
+  while(!gps_set_sucess)
+  {
+    sendUBX(setVTG, sizeof(setVTG)/sizeof(uint8_t));
+    gps_set_sucess=getUBX_ACK(setVTG);
   }
   gps_set_sucess=0;
 
