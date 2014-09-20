@@ -38,7 +38,7 @@
 // - Cars:       9
 // - Home:       0
 // - IGate:      5
-#define S_CALLSIGN      "CT1EQV"  //callsign
+#define S_CALLSIGN      "CS5CEP"  //callsign
 #define S_CALLSIGN_ID   11
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
